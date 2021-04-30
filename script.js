@@ -1,6 +1,14 @@
-let myLibrary = ['Science of getting rich', 'Napoleon Hill'];
+const bookForm = document.querySelector('.book-form');
+const author = bookForm.querySelector('#author');
+const title = bookForm.querySelector('#title');
+const pages = bookForm.querySelector('#pages');
+const read = bookForm.querySelector('#isRead');
+
 const btnClass = ['btn', 'btn-danger'];
 const readBtnClass = ['btn', 'btn-success'];
+
+let myLibrary = [];
+let newBook;
 
 function Book(id, title, author, pages) {
   this.id = id;
@@ -12,6 +20,14 @@ function Book(id, title, author, pages) {
 
 function addBookToLibrary() {
   // do stuff here
+  newBook = new Book(
+    title.value,
+    author.value,
+    pages.value,
+    read.value,
+  );
+
+  // Call Display function on new book
 }
 
 function displayBooks() {
@@ -20,23 +36,33 @@ function displayBooks() {
   table.classList.add('table');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
-  const thName = document.createElement('th');
+  const thTitle = document.createElement('th');
+  const thAuthor = document.createElement('th');
+  const thPages = document.createElement('th');
+
   const thBtn = document.createElement('th');
   const thBtnRead = document.createElement('th');
-  thName.textContent = "Name";
-  thBtn.textContent = "";
+  thTitle.textContent = 'Title';
+  thAuthor.textContent = 'Author';
+  thPages.textContent = 'Pages';
+
+  thBtn.textContent = '';
   thBtnRead.textContent = '';
 
   const tbody = document.createElement('tbody');
 
-  for (var i = 0; i < myLibrary.length; i++) {
-    let tr = document.createElement('tr');
-    let td = document.createElement('td');
-    let tdBtn = document.createElement('td');
-    let tdBtnRead = document.createElement('td');
-    let removeBtn = document.createElement('button');
-    let readBtn = document.createElement('button');
-    td.textContent = myLibrary[i];
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    const tr = document.createElement('tr');
+    const tdTitle = document.createElement('td');
+    const tdAuthor = document.createElement('td');
+    const tdPages = document.createElement('td');
+    const tdBtn = document.createElement('td');
+    const tdBtnRead = document.createElement('td');
+
+    const removeBtn = document.createElement('button');
+    const readBtn = document.createElement('button');
+
+    tdTitle.textContent = myLibrary[i];
     tdBtn.appendChild(removeBtn);
     tdBtnRead.appendChild(readBtn);
     removeBtn.classList.add(...btnClass);
@@ -45,18 +71,14 @@ function displayBooks() {
     removeBtn.setAttribute('data-id', `${i}`);
     readBtn.textContent = 'Read';
     readBtn.setAttribute('data-id', `${i}`);
-    tr.appendChild(td);
-    tr.appendChild(tdBtn);
-    tr.appendChild(tdBtnRead);
+    tr.append(tdTitle, tdAuthor, tdPages, tdBtn, tdBtnRead);
     tbody.appendChild(tr);
-  };
+  }
 
   container.appendChild(table);
-  table.appendChild(thead); 
-  thead.appendChild(tr); 
-  tr.appendChild(thName);
-  tr.appendChild(thBtn);
-  tr.appendChild(thBtnRead);
+  table.appendChild(thead);
+  thead.appendChild(tr);
+  tr.append(thTitle, thAuthor, thPages, thBtn, thBtnRead);
   table.appendChild(tbody);
 }
 
