@@ -38,6 +38,7 @@ function displayBooks() {
     let readBtn = document.createElement('button');
     td.textContent = myLibrary[i];
     tdBtn.appendChild(removeBtn);
+    tdBtnRead.appendChild(readBtn);
     removeBtn.classList.add(...btnClass);
     readBtn.classList.add(...readBtnClass);
     removeBtn.textContent = 'Remove';
@@ -46,7 +47,7 @@ function displayBooks() {
     readBtn.setAttribute('data-id', `${i}`);
     tr.appendChild(td);
     tr.appendChild(tdBtn);
-    tr.appendChild(readBtn);
+    tr.appendChild(tdBtnRead);
     tbody.appendChild(tr);
   };
 
@@ -55,6 +56,7 @@ function displayBooks() {
   thead.appendChild(tr); 
   tr.appendChild(thName);
   tr.appendChild(thBtn);
+  tr.appendChild(thBtnRead);
   table.appendChild(tbody);
 }
 
