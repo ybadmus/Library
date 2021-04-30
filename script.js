@@ -21,6 +21,7 @@ function displayBooks() {
   const tr = document.createElement('tr');
   const thName = document.createElement('th');
   const thBtn = document.createElement('th');
+  const thBtn = document.createElement('th');
   thName.textContent = "Name";
   thBtn.textContent = "";
 
@@ -31,6 +32,7 @@ function displayBooks() {
     let td = document.createElement('td');
     let tdBtn = document.createElement('td');
     let removeBtn = document.createElement('button');
+    
     td.textContent = myLibrary[i];
     tdBtn.appendChild(removeBtn);
     removeBtn.classList.add(...btnClass);
