@@ -19,27 +19,32 @@ function displayBooks() {
   table.classList.add('table');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
-  const th = document.createElement('th');
-  th.textContent = "Name"
+  const thName = document.createElement('th');
+  const thBtn = document.createElement('th');
+  thName.textContent = "Name";
+  thBtn.textContent = "";
 
   const tbody = document.createElement('tbody');
-  const removeBtn = document.createElement('button');
-  removeBtn.classList.add(...btnClass);
-  removeBtn.textContent = 'Remove';
 
   for (var i = 0; i < myLibrary.length; i++) {
     let tr = document.createElement('tr');
     let td = document.createElement('td');
+    let tdBtn = document.createElement('td');
+    let removeBtn = document.createElement('button');
     td.textContent = myLibrary[i];
+    tdBtn.appendChild(removeBtn);
+    removeBtn.classList.add(...btnClass);
+    removeBtn.textContent = 'Remove';
     tr.appendChild(td);
-    td.appendChild(removeBtn);
+    tr.appendChild(tdBtn);
     tbody.appendChild(tr);
   };
 
   container.appendChild(table);
   table.appendChild(thead); 
   thead.appendChild(tr); 
-  tr.appendChild(th);
+  tr.appendChild(thName);
+  tr.appendChild(thBtn);
   table.appendChild(tbody);
 }
 
