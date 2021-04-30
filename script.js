@@ -1,4 +1,5 @@
 let myLibrary = ['Science of getting rich', 'Napoleon Hill'];
+const btnClass = ['btn', 'btn-danger'];
 
 function Book(id, title, author, pages) {
   this.id = id;
@@ -22,19 +23,23 @@ function displayBooks() {
   th.textContent = "Name"
 
   const tbody = document.createElement('tbody');
+  const removeBtn = document.createElement('button');
+  removeBtn.classList.add(...btnClass);
+  removeBtn.textContent = 'Remove';
 
   for (var i = 0; i < myLibrary.length; i++) {
     let tr = document.createElement('tr');
     let td = document.createElement('td');
     td.textContent = myLibrary[i];
     tr.appendChild(td);
+    td.appendChild(removeBtn);
     tbody.appendChild(tr);
   };
 
   container.appendChild(table);
   table.appendChild(thead); 
   thead.appendChild(tr); 
-  tr.appendChild(th); 
+  tr.appendChild(th);
   table.appendChild(tbody);
 }
 
