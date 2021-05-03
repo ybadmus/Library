@@ -35,6 +35,14 @@ function toggle(e) {
     }
 }
 
+
+function removeBook(e) {
+    myLibrary.splice(e.target.dataset.id, 1);
+    const table = document.querySelector('.table');
+    table.remove();
+    displayBooks()
+}
+
 function displayBooks() {
     const container = document.querySelector('#container');
     const table = document.createElement('table');
@@ -82,6 +90,7 @@ function displayBooks() {
             readBtn.textContent = 'Not Read';
         readBtn.setAttribute('data-id', `${i}`);
         readBtn.addEventListener('click', toggle);
+        removeBtn.addEventListener('click', removeBook);
         tr.append(tdTitle, tdAuthor, tdPages, tdBtn, tdBtnRead);
         tbody.appendChild(tr);
     }
