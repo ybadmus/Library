@@ -1,4 +1,4 @@
-# Library
+## Library
 This is the very first project of the JavaScript module. It is preceded by the lesson about “Objects” and the “Object Constructor”.
 
 ![screenshot](https://raw.githubusercontent.com/ybadmus/Library/feature/app_screenshot.PNG)
