@@ -2,7 +2,6 @@ const bookForm = document.querySelector('.book-form');
 const author = bookForm.querySelector('#author');
 const title = bookForm.querySelector('#title');
 const pages = bookForm.querySelector('#pages');
-const read = bookForm.querySelector('#isRead');
 const btnClass = ['btn', 'btn-danger'];
 const readBtnClass = ['btn', 'btn-success'];
 const saveBtn = document.querySelector('#btnSave');
@@ -141,11 +140,14 @@ function displayBooks() {
 saveBtn.addEventListener('click', () => {
   addBookToLibrary();
   myLibrary.push(newBook);
+  // eslint-disable-next-line no-undef
   $('#exampleModal').modal('hide');
   const table = document.querySelector('.table');
   table.remove();
 
-  $('#exampleModal').on('hidden.bs.modal', function () {
+  // eslint-disable-next-line no-undef
+  $('#exampleModal').on('hidden.bs.modal', function reset() {
+    // eslint-disable-next-line no-undef
     $(this).find('form').trigger('reset');
   });
 
