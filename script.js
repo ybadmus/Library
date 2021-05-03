@@ -37,6 +37,32 @@ function toggle(e) {
   }
 }
 
+function tableHead() {
+  const container = document.querySelector('#container');
+  const table = document.createElement('table');
+  table.classList.add('table');
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+  const thTitle = document.createElement('th');
+  const thAuthor = document.createElement('th');
+  const thPages = document.createElement('th');
+
+  const thBtn = document.createElement('th');
+  const thBtnRead = document.createElement('th');
+
+  return {
+    container,
+    table,
+    thead,
+    tr,
+    thTitle,
+    thAuthor,
+    thPages,
+    thBtn,
+    thBtnRead,
+  };
+}
+
 function tableRow() {
   const tr = document.createElement('tr');
   const tdTitle = document.createElement('td');
@@ -61,23 +87,14 @@ function tableRow() {
 }
 
 function displayBooks() {
-  const container = document.querySelector('#container');
-  const table = document.createElement('table');
-  table.classList.add('table');
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
-  const thTitle = document.createElement('th');
-  const thAuthor = document.createElement('th');
-  const thPages = document.createElement('th');
+  const tHead = tableHead();
 
-  const thBtn = document.createElement('th');
-  const thBtnRead = document.createElement('th');
-  thTitle.textContent = 'Title';
-  thAuthor.textContent = 'Author';
-  thPages.textContent = 'Pages';
+  tHead.thTitle.textContent = 'Title';
+  tHead.thAuthor.textContent = 'Author';
+  tHead.thPages.textContent = 'Pages';
 
-  thBtn.textContent = '';
-  thBtnRead.textContent = '';
+  tHead.thBtn.textContent = '';
+  tHead.thBtnRead.textContent = '';
 
   const tbody = document.createElement('tbody');
 
@@ -110,11 +127,11 @@ function displayBooks() {
     tbody.appendChild(table.tr);
   }
 
-  container.appendChild(table);
-  table.appendChild(thead);
-  thead.appendChild(tr);
-  tr.append(thTitle, thAuthor, thPages, thBtn, thBtnRead);
-  table.appendChild(tbody);
+  tHead.container.appendChild(tHead.table);
+  tHead.table.appendChild(tHead.thead);
+  tHead.thead.appendChild(tHead.tr);
+  tHead.tr.append(tHead.thTitle, tHead.thAuthor, tHead.thPages, tHead.thBtn, tHead.thBtnRead);
+  tHead.table.appendChild(tbody);
 }
 
 const saveBtn = document.querySelector('#btnSave');
