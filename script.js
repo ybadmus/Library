@@ -7,7 +7,7 @@ const read = bookForm.querySelector('#isRead');
 const btnClass = ['btn', 'btn-danger'];
 const readBtnClass = ['btn', 'btn-success'];
 
-let myLibrary = [];
+let myLibrary = [{ bookID: 1, author: 'Peter Thiel', title: 'Zero to One', pages: 186 }];
 let newBook;
 
 function Book(id, title, author, pages) {
@@ -62,7 +62,9 @@ function displayBooks() {
     const removeBtn = document.createElement('button');
     const readBtn = document.createElement('button');
 
-    tdTitle.textContent = myLibrary[i];
+    tdTitle.textContent = myLibrary[i].title;
+    tdAuthor.textContent = myLibrary[i].author;
+    tdPages.textContent = myLibrary[i].pages;
     tdBtn.appendChild(removeBtn);
     tdBtnRead.appendChild(readBtn);
     removeBtn.classList.add(...btnClass);
