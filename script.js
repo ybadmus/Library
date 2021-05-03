@@ -86,6 +86,25 @@ function tableRow() {
   };
 }
 
+function assignValues(table, i) {
+  table.tdTitle.textContent = myLibrary[i].title;
+  table.tdAuthor.textContent = myLibrary[i].author;
+  table.tdPages.textContent = myLibrary[i].pages;
+  table.tdBtn.appendChild(table.removeBtn);
+  table.tdBtnRead.appendChild(table.readBtn);
+  table.removeBtn.classList.add(...btnClass);
+  table.readBtn.classList.add(...readBtnClass);
+  table.removeBtn.textContent = 'Remove';
+  table.removeBtn.setAttribute('data-id', `${i}`);
+  if (myLibrary[i].isRead) {
+    table.readBtn.textContent = 'Read';
+  } else {
+    table.readBtn.textContent = 'Not Read';
+  }
+  table.readBtn.setAttribute('data-id', `${i}`);
+  return table;
+}
+
 function displayBooks() {
   const tHead = tableHead();
 
@@ -100,21 +119,7 @@ function displayBooks() {
 
   for (let i = 0; i < myLibrary.length; i += 1) {
     const table = tableRow();
-
-    table.tdTitle.textContent = myLibrary[i].title;
-    table.tdAuthor.textContent = myLibrary[i].author;
-    table.tdPages.textContent = myLibrary[i].pages;
-    table.tdBtn.appendChild(table.removeBtn);
-    table.tdBtnRead.appendChild(table.readBtn);
-    table.removeBtn.classList.add(...btnClass);
-    table.readBtn.classList.add(...readBtnClass);
-    table.removeBtn.textContent = 'Remove';
-    table.removeBtn.setAttribute('data-id', `${i}`);
-    if (myLibrary[i].isRead) {
-      table.readBtn.textContent = 'Read';
-    } else {
-      table.readBtn.textContent = 'Not Read';
-    }
+    assignValues(table, i);
     table.readBtn.setAttribute('data-id', `${i}`);
     table.readBtn.addEventListener('click', toggle);
     table.removeBtn.addEventListener('click', (e) => {
