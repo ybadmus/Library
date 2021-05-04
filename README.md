@@ -18,7 +18,7 @@ This is the very first project of the JavaScript module. It is preceded by the l
 
 To get a local copy up and running follow these simple steps.
 
-- Clone the project unto your local machine
+- Clone the project unto your local machine. Run `git clone https://github.com/ybadmus/Library.git`
 - Open up the .html file.
 
 ## Prerequisites
