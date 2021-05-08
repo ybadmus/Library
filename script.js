@@ -1,157 +1,166 @@
-const bookForm = document.querySelector('.book-form');
-const author = bookForm.querySelector('#author');
-const title = bookForm.querySelector('#title');
-const pages = bookForm.querySelector('#pages');
-const btnClass = ['btn', 'btn-danger'];
-const readBtnClass = ['btn', 'btn-success'];
 const saveBtn = document.querySelector('#btnSave');
-
-const myLibrary = [];
 let newBook;
-let bookIds = 0;
+let tableFunc;
 
-function Book(id, title, author, pages) {
-  this.id = id;
-  this.author = author;
-  this.title = title;
-  this.pages = pages;
-  this.isRead = false;
-}
-
-function addBookToLibrary() {
-  newBook = new Book();
-  bookIds += 1;
-  newBook.id = bookIds;
-  newBook.title = title.value;
-  newBook.author = author.value;
-  newBook.pages = pages.value;
-}
-
-function toggle(e) {
+const toggleBook = (e) => {
   if (e.target.textContent === 'Not Read') {
     e.target.textContent = 'Read';
-    myLibrary[e.target.dataset.id].isRead = true;
-  } else {
-    myLibrary[e.target.dataset.id].isRead = false;
+    newBook.updateStatus([e.target.dataset.id]);
   }
-}
+};
 
-function tableHead() {
+const Book = (title, author, pages) => {
+  const id = 0;
+  const isRead = false;
+
+  return {
+    id,
+    author,
+    title,
+    pages,
+    isRead,
+  };
+};
+
+const TableFunc = () => {
+  const tableHead = (title, author, pages) => {
+    const thead = document.createElement('thead');
+    const tr = document.createElement('tr');
+    const thTitle = document.createElement('th');
+    const thAuthor = document.createElement('th');
+    const thPages = document.createElement('th');
+    const thBtn = document.createElement('th');
+    const thBtnRead = document.createElement('th');
+
+    thTitle.textContent = title;
+    thAuthor.textContent = author;
+    thPages.textContent = pages;
+    thBtn.textContent = '';
+    thBtnRead.textContent = '';
+
+    tr.append(thTitle, thAuthor, thPages, thBtn, thBtnRead);
+    thead.appendChild(tr);
+
+    return thead;
+  };
+
+  const deleteBook = (e) => {
+    newBook.deleteBookFromLibrary(e.target.dataset.id);
+    const table = document.querySelector('.table');
+    table.remove();
+    displayBooks();
+  };
+
+  const tableRow = (i) => {
+    const btnClass = ['btn', 'btn-danger'];
+    const readBtnClass = ['btn', 'btn-success'];
+
+    const tr = document.createElement('tr');
+    const tdTitle = document.createElement('td');
+    const tdAuthor = document.createElement('td');
+    const tdPages = document.createElement('td');
+    const tdBtn = document.createElement('td');
+    const tdBtnRead = document.createElement('td');
+    const removeBtn = document.createElement('button');
+    const readBtn = document.createElement('button');
+
+    const myLibrary = newBook.getBooksInLibrary();
+
+    tdTitle.textContent = myLibrary[i].title;
+    tdAuthor.textContent = myLibrary[i].author;
+    tdPages.textContent = myLibrary[i].pages;
+
+    removeBtn.textContent = 'Remove';
+    removeBtn.classList.add(...btnClass);
+    removeBtn.setAttribute('data-id', `${i}`);
+    removeBtn.addEventListener('click', deleteBook);
+    tdBtn.appendChild(removeBtn);
+
+    if (myLibrary[i].isRead) {
+      readBtn.textContent = 'Read';
+    } else {
+      readBtn.textContent = 'Not Read';
+    }
+    readBtn.classList.add(...readBtnClass);
+    readBtn.setAttribute('data-id', `${i}`);
+    readBtn.addEventListener('click', toggleBook);
+    tdBtnRead.appendChild(readBtn);
+
+    tr.append(tdTitle, tdAuthor, tdPages, tdBtn, tdBtnRead);
+
+    return tr;
+  };
+
+  return { tableHead, tableRow };
+};
+
+const BookActions = () => {
+  const myLibrary = [];
+  let bookId = 0;
+
+  const addBookToLibrary = (book) => {
+    bookId += 1;
+    book.Id = bookId;
+    myLibrary.push(book);
+  };
+
+  const getBooksInLibrary = () => myLibrary;
+
+  const deleteBookFromLibrary = (i) => {
+    myLibrary.splice(i, 1);
+  };
+
+  const updateStatus = (i) => {
+    myLibrary[i].isRead = true;
+  };
+
+  return {
+    addBookToLibrary,
+    getBooksInLibrary,
+    deleteBookFromLibrary,
+    updateStatus,
+  };
+};
+
+// eslint-disable-next-line no-undef
+$('#exampleModal').on('hidden.bs.modal', function reset() {
+  // eslint-disable-next-line no-undef
+  $(this).find('form').trigger('reset');
+});
+
+const displayBooks = () => {
   const container = document.querySelector('#container');
   const table = document.createElement('table');
   table.classList.add('table');
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
-  const thTitle = document.createElement('th');
-  const thAuthor = document.createElement('th');
-  const thPages = document.createElement('th');
-  const thBtn = document.createElement('th');
-  const thBtnRead = document.createElement('th');
-
-  thTitle.textContent = 'Title';
-  thAuthor.textContent = 'Author';
-  thPages.textContent = 'Pages';
-  thBtn.textContent = '';
-  thBtnRead.textContent = '';
-
-  return {
-    container,
-    table,
-    thead,
-    tr,
-    thTitle,
-    thAuthor,
-    thPages,
-    thBtn,
-    thBtnRead,
-  };
-}
-
-function tableRow() {
-  const tr = document.createElement('tr');
-  const tdTitle = document.createElement('td');
-  const tdAuthor = document.createElement('td');
-  const tdPages = document.createElement('td');
-  const tdBtn = document.createElement('td');
-  const tdBtnRead = document.createElement('td');
-
-  const removeBtn = document.createElement('button');
-  const readBtn = document.createElement('button');
-
-  return {
-    tr,
-    tdTitle,
-    tdAuthor,
-    tdPages,
-    tdBtn,
-    tdBtnRead,
-    removeBtn,
-    readBtn,
-  };
-}
-
-function assignValues(i) {
-  const table = tableRow();
-
-  table.tdTitle.textContent = myLibrary[i].title;
-  table.tdAuthor.textContent = myLibrary[i].author;
-  table.tdPages.textContent = myLibrary[i].pages;
-  table.tdBtn.appendChild(table.removeBtn);
-  table.tdBtnRead.appendChild(table.readBtn);
-  table.removeBtn.classList.add(...btnClass);
-  table.readBtn.classList.add(...readBtnClass);
-  table.removeBtn.textContent = 'Remove';
-  table.removeBtn.setAttribute('data-id', `${i}`);
-  if (myLibrary[i].isRead) {
-    table.readBtn.textContent = 'Read';
-  } else {
-    table.readBtn.textContent = 'Not Read';
-  }
-  table.readBtn.setAttribute('data-id', `${i}`);
-  return table;
-}
-
-function displayBooks() {
-  const tHead = tableHead();
+  const tHead = tableFunc.tableHead('Title', 'Author', 'Pages');
   const tbody = document.createElement('tbody');
+  const myLibrary = newBook.getBooksInLibrary();
 
   for (let i = 0; i < myLibrary.length; i += 1) {
-    const table = assignValues(i);
-    table.readBtn.setAttribute('data-id', `${i}`);
-    table.readBtn.addEventListener('click', toggle);
-    table.removeBtn.addEventListener('click', (e) => {
-      myLibrary.splice(e.target.dataset.id, 1);
-      const table = document.querySelector('.table');
-      table.remove();
-      displayBooks();
-    });
-
-    table.tr.append(table.tdTitle, table.tdAuthor, table.tdPages, table.tdBtn, table.tdBtnRead);
-    tbody.appendChild(table.tr);
+    tbody.appendChild(tableFunc.tableRow(i));
   }
 
-  tHead.container.appendChild(tHead.table);
-  tHead.table.appendChild(tHead.thead);
-  tHead.thead.appendChild(tHead.tr);
-  tHead.tr.append(tHead.thTitle, tHead.thAuthor, tHead.thPages, tHead.thBtn, tHead.thBtnRead);
-  tHead.table.appendChild(tbody);
-}
+  table.appendChild(tHead);
+  table.appendChild(tbody);
+  container.appendChild(table);
+};
 
 saveBtn.addEventListener('click', () => {
-  addBookToLibrary();
-  myLibrary.push(newBook);
+  const bookForm = document.querySelector('.book-form');
+  const author = bookForm.querySelector('#author');
+  const title = bookForm.querySelector('#title');
+  const pages = bookForm.querySelector('#pages');
+
+  const book = Book(title.value, author.value, pages.value);
+
+  newBook.addBookToLibrary(book);
   // eslint-disable-next-line no-undef
   $('#exampleModal').modal('hide');
-  const table = document.querySelector('.table');
-  table.remove();
-
-  // eslint-disable-next-line no-undef
-  $('#exampleModal').on('hidden.bs.modal', function reset() {
-    // eslint-disable-next-line no-undef
-    $(this).find('form').trigger('reset');
-  });
-
+  document.querySelector('.table').remove();
   displayBooks();
 });
+
+newBook = BookActions();
+tableFunc = TableFunc();
 
 displayBooks();
