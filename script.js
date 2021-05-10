@@ -9,6 +9,12 @@ const toggleBook = (e) => {
     }
 };
 
+const deleteBook = (e) => {
+    newBook.deleteBookFromLibrary(e.target.dataset.id);
+    document.querySelector('.table').remove();
+    displayBooks();
+};
+
 class Book {
     id = 0;
     isRead = false;
@@ -74,7 +80,6 @@ class TableFunc {
         const removeBtn = document.createElement('button');
         const readBtn = document.createElement('button');
 
-        const myLibrary = newBook.getBooksInLibrary();
         tdTitle.textContent = book.title;
         tdAuthor.textContent = book.author;
         tdPages.textContent = book.pages;
@@ -85,7 +90,7 @@ class TableFunc {
         removeBtn.addEventListener('click', deleteBook);
         tdBtn.appendChild(removeBtn);
 
-        if (myLibrary[i].isRead) {
+        if (book.isRead) {
             readBtn.textContent = 'Read';
         } else {
             readBtn.textContent = 'Not Read';
@@ -109,7 +114,7 @@ class BookFunc {
     }
 
     addBookToLibrary = (book) => {
-        book.Id = this.myLibrary.length;
+        book.id = this.myLibrary.length;
         this.myLibrary.push(book);
     };
 
@@ -137,7 +142,7 @@ const displayBooks = () => {
     const container = document.querySelector('#container');
     const table = document.createElement('table');
     table.classList.add('table');
-    const tHead = tableFunc.tableHead('Title', 'Author', 'Pages');
+    const tHead = tableFunc.tableHead();
     const tbody = document.createElement('tbody');
 
     const myLibrary = newBook.getBooksInLibrary();
@@ -163,9 +168,10 @@ saveBtn.addEventListener('click', () => {
     // eslint-disable-next-line no-undef
     $('#exampleModal').modal('hide');
     document.querySelector('.table').remove();
+    displayBooks();
 });
 
 newBook = new BookFunc();
-tableFunc = new TableFunc();
+tableFunc = new TableFunc('Title', 'Author', 'Pages');
 
 displayBooks();
