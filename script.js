@@ -123,14 +123,16 @@ class BookFunc {
         this.myLibrary.push(book);
     };
 
-    getBooksInLibrary = () => myLibrary;
+    getBooksInLibrary = () => {
+        return this.myLibrary;
+    }
 
     deleteBookFromLibrary = (i) => {
-        myLibrary.splice(i, 1);
+        this.myLibrary.splice(i, 1);
     };
 
     updateStatus = (i) => {
-        myLibrary[i].isRead = true;
+        this.myLibrary[i].isRead = true;
     };
 };
 
