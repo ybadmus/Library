@@ -6,6 +6,8 @@ const toggleBook = (e) => {
     if (e.target.textContent === 'Not Read') {
         e.target.textContent = 'Read';
         newBook.updateStatus(e.target.dataset.id);
+        document.querySelector('.table').remove();
+        displayBooks();
     }
 };
 
