@@ -113,31 +113,24 @@ const TableFunc = () => {
     return { tableHead, tableRow };
 };
 
-const BookFuncs = () => {
-    const myLibrary = [];
-    let bookId = 0;
+class BookFunc {
 
-    const addBookToLibrary = (book) => {
-        bookId += 1;
-        book.Id = bookId;
-        myLibrary.push(book);
+    constructor() {
+        this.myLibrary = [];
+    }
+
+    addBookToLibrary = (book) => {
+        this.myLibrary.push(book);
     };
 
-    const getBooksInLibrary = () => myLibrary;
+    getBooksInLibrary = () => myLibrary;
 
-    const deleteBookFromLibrary = (i) => {
+    deleteBookFromLibrary = (i) => {
         myLibrary.splice(i, 1);
     };
 
-    const updateStatus = (i) => {
+    updateStatus = (i) => {
         myLibrary[i].isRead = true;
-    };
-
-    return {
-        addBookToLibrary,
-        getBooksInLibrary,
-        deleteBookFromLibrary,
-        updateStatus,
     };
 };
 
@@ -179,7 +172,7 @@ saveBtn.addEventListener('click', () => {
     displayBooks();
 });
 
-newBook = BookFuncs();
+newBook = BookFunc();
 tableFunc = TableFunc();
 
 displayBooks();
