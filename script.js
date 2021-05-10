@@ -5,7 +5,7 @@ let tableFunc;
 const toggleBook = (e) => {
     if (e.target.textContent === 'Not Read') {
         e.target.textContent = 'Read';
-        newBook.updateStatus([e.target.dataset.id]);
+        newBook.updateStatus(e.target.dataset.id);
     }
 };
 
@@ -28,21 +28,19 @@ class Book {
             isRead: this.isRead
         };
     }
-
-    updateIsRead = () => {
-        this.isRead = true
-    }
-
-    /**
-     * @param {number} id
-     */
-    set setBookId(id) {
-        this.id = id
-    }
 };
 
-const TableFunc = () => {
-    const tableHead = (title, author, pages) => {
+class TableFunc {
+
+    constructor(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.thBtn = "";
+        this.thBtnRead = "";
+    }
+
+    tableHead = () => {
         const thead = document.createElement('thead');
         const tr = document.createElement('tr');
         const thTitle = document.createElement('th');
@@ -51,11 +49,11 @@ const TableFunc = () => {
         const thBtn = document.createElement('th');
         const thBtnRead = document.createElement('th');
 
-        thTitle.textContent = title;
-        thAuthor.textContent = author;
-        thPages.textContent = pages;
-        thBtn.textContent = '';
-        thBtnRead.textContent = '';
+        thTitle.textContent = this.title;
+        thAuthor.textContent = this.author;
+        thPages.textContent = this.pages;
+        thBtn.textContent = this.thBtn;
+        thBtnRead.textContent = this.thBtnRead;
 
         tr.append(thTitle, thAuthor, thPages, thBtn, thBtnRead);
         thead.appendChild(tr);
@@ -63,14 +61,7 @@ const TableFunc = () => {
         return thead;
     };
 
-    const deleteBook = (e) => {
-        newBook.deleteBookFromLibrary(e.target.dataset.id);
-        const table = document.querySelector('.table');
-        table.remove();
-        displayBooks();
-    };
-
-    const tableRow = (i) => {
+    tableRow = (book) => {
         const btnClass = ['btn', 'btn-danger'];
         const readBtnClass = ['btn', 'btn-success'];
 
@@ -84,14 +75,13 @@ const TableFunc = () => {
         const readBtn = document.createElement('button');
 
         const myLibrary = newBook.getBooksInLibrary();
-
-        tdTitle.textContent = myLibrary[i].title;
-        tdAuthor.textContent = myLibrary[i].author;
-        tdPages.textContent = myLibrary[i].pages;
+        tdTitle.textContent = book.title;
+        tdAuthor.textContent = book.author;
+        tdPages.textContent = book.pages;
 
         removeBtn.textContent = 'Remove';
         removeBtn.classList.add(...btnClass);
-        removeBtn.setAttribute('data-id', `${i}`);
+        removeBtn.setAttribute('data-id', `${book.id}`);
         removeBtn.addEventListener('click', deleteBook);
         tdBtn.appendChild(removeBtn);
 
@@ -100,8 +90,9 @@ const TableFunc = () => {
         } else {
             readBtn.textContent = 'Not Read';
         }
+
         readBtn.classList.add(...readBtnClass);
-        readBtn.setAttribute('data-id', `${i}`);
+        readBtn.setAttribute('data-id', `${book.id}`);
         readBtn.addEventListener('click', toggleBook);
         tdBtnRead.appendChild(readBtn);
 
@@ -109,8 +100,6 @@ const TableFunc = () => {
 
         return tr;
     };
-
-    return { tableHead, tableRow };
 };
 
 class BookFunc {
@@ -120,6 +109,7 @@ class BookFunc {
     }
 
     addBookToLibrary = (book) => {
+        book.Id = this.myLibrary.length;
         this.myLibrary.push(book);
     };
 
@@ -134,6 +124,7 @@ class BookFunc {
     updateStatus = (i) => {
         this.myLibrary[i].isRead = true;
     };
+
 };
 
 // eslint-disable-next-line no-undef
@@ -148,10 +139,11 @@ const displayBooks = () => {
     table.classList.add('table');
     const tHead = tableFunc.tableHead('Title', 'Author', 'Pages');
     const tbody = document.createElement('tbody');
+
     const myLibrary = newBook.getBooksInLibrary();
 
     for (let i = 0; i < myLibrary.length; i += 1) {
-        tbody.appendChild(tableFunc.tableRow(i));
+        tbody.appendChild(tableFunc.tableRow(myLibrary[i]));
     }
 
     table.appendChild(tHead);
@@ -165,16 +157,15 @@ saveBtn.addEventListener('click', () => {
     const title = bookForm.querySelector('#title');
     const pages = bookForm.querySelector('#pages');
 
-    const book = Book(title.value, author.value, pages.value);
-
+    let book = new Book(title.value, author.value, pages.value);
     newBook.addBookToLibrary(book);
+
     // eslint-disable-next-line no-undef
     $('#exampleModal').modal('hide');
     document.querySelector('.table').remove();
-    displayBooks();
 });
 
-newBook = BookFunc();
-tableFunc = TableFunc();
+newBook = new BookFunc();
+tableFunc = new TableFunc();
 
 displayBooks();
